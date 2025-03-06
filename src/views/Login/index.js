@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
-import { checkIfUserIsAuth } from "../../redux/actions/login";
-import { isAuthSel, isCheckingAuthSel } from "../../redux/selectors";
+import { checkIfUserIsAuth, submitLogin } from "../../redux/actions/login";
+import { isAuthSel, isCheckingAuthSel, isSendingAuthFormSel, isSuccessLoggedSel } from "../../redux/selectors";
 
 export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
+
   const isAuth = useSelector(isAuthSel, shallowEqual);
   const isCheckingAuth = useSelector(isCheckingAuthSel, shallowEqual);
+
+  const isSuccessLogged = useSelector(isSuccessLoggedSel, shallowEqual);
+  const isSendingAuthForm = useSelector(isSendingAuthFormSel, shallowEqual);
   
   useEffect(() => {
     dispatch(checkIfUserIsAuth());
@@ -23,21 +27,22 @@ export default function Login() {
     }
   }, [isAuth]);
 
+  useEffect(() => {
+    if(isSuccessLogged) {
+      history.push("/search");
+    }
+  }, [isSuccessLogged]);
+
   const handleSubmitForm = (evt) => {
     evt.preventDefault();
   
     if (name?.length && email?.length) {
-      localStorage.setItem("@superhero-isAuth", "true");
-      localStorage.setItem("@superhero-data", JSON.stringify({
-        name,
-        email
-      }));
-
-      history.push("/search");
+      dispatch(submitLogin(name, email));
+      // history.push("/search");
     }
   };
 
-  if (isCheckingAuth) {
+  if (isCheckingAuth || isSendingAuthForm) {
     return <p className="text-center mt-5">Cargando...</p>;
   }
 
