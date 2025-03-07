@@ -1,6 +1,6 @@
 import React from "react";
 
-export default React.memo(function Bio({ bio, bioWork, connections, powerStats }) {
+export default React.memo(function Bio({ bio, work, connections }) {
   return (
     <div>
       <div>
@@ -8,7 +8,7 @@ export default React.memo(function Bio({ bio, bioWork, connections, powerStats }
         <p className="text-sm italic">({bio["alter-egos"]})</p>
       </div>
       <div className="mt-2">
-        <p>{bioWork?.base}</p>
+        <p>{work?.base}</p>
         <p>{connections["group-affiliation"]}</p>
         <p>{connections["relatives"]}</p>
       </div>
