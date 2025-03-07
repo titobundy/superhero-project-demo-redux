@@ -8,16 +8,18 @@ export const sendingAuthForm = createAction('SENDING_AUTH_FORM');
 export const completedSendAuthForm = createAction('COMPLETED_SEND_AUTH_FORM');
 export const errorSendAuthForm = createAction('ERROR_SEND_AUTH_FORM');
 
+// Define a thunk that dispatches those Auth action
 export const checkIfUserIsAuth = () => (dispatch) => {
   try {
     dispatch(checkingAuth());
     const isAuth = localStorage.getItem('@superhero-isAuth')?.length > 0;
     dispatch(completedAuth({ isAuth }));
   } catch (error) {
-    dispatch(errorAuth({ error}));
+    dispatch(errorAuth({ error }));
   }
 };
 
+// Define a thunk that dispatches those Login action
 export const submitLogin = (name, email) => (dispatch) => {
     try {
         dispatch(sendingAuthForm());
